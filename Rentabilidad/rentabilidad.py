@@ -1,11 +1,9 @@
 import pandas as pd
 
-# Cargar el archivo subido
+# Cargar el archivo
 file_path = "./rentabilidad.xlsx"
 df = pd.read_excel(file_path)
 
-# Ver las primeras filas para entender la estructura
-df.head()
 # Calcular rentabilidad y margen
 df["Rentabilidad"] = df["Total venta"] - df["Total costo"]
 df["Margen (%)"] = round((df["Rentabilidad"] / df["Total venta"]) * 100, 2)
@@ -27,11 +25,13 @@ resumen_mes_cat = df.groupby(["Mes", "Categoría"]).agg(
     Prom_margen_pct=("Margen (%)", "mean")
 ).reset_index()
 
-# Exportar a un nuevo Excel con resumen
+# Definir ruta de salida ANTES de usarla
+output_path = "./reporte_rentabilidad.xlsx"
 
+# Exportar a un nuevo Excel con resumen usando contexto 'with'
 with pd.ExcelWriter(output_path, engine="xlsxwriter") as writer:
     df.to_excel(writer, sheet_name="Detalle", index=False)
     resumen_producto.to_excel(writer, sheet_name="Por producto", index=False)
     resumen_mes_cat.to_excel(writer, sheet_name="Por mes y categoría", index=False)
 
-output_path = "./reporte_rentabilidad.xlsx"
+print(f"Reporte generado en: {output_path}")
