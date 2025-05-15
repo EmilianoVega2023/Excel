@@ -33,7 +33,8 @@ for fecha in fechas:
         "Precio unitario": item["Precio"],
         "Costo unitario": item["Costo"],
         "Total venta": cantidad * item["Precio"],
-        "Total costo": cantidad * item["Costo"]
+        "Total costo": cantidad * item["Costo"],
+        "Proveedor": random.choice(["Carnicero", "Verdulero", "Bebidas"])
     })
 
 df = pd.DataFrame(data)
